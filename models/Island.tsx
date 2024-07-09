@@ -13,6 +13,7 @@ import React, { useRef } from "react";
 import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 import { a } from "@react-spring/three";
+import { Vector3, Euler, useThree } from "@react-three/fiber";
 // import {islandScene} from "/3d/island.glb";
 
 type GLTFResult = GLTF & {
@@ -30,12 +31,53 @@ type GLTFResult = GLTF & {
   };
 };
 
-const Island = (props: JSX.IntrinsicElements["group"]) => {
+interface IslandProps {
+  position: Vector3;
+  scale: Vector3;
+  rotation: Euler;
+  isRotating: boolean;
+  setIsRotating: (isRotating: boolean) => void;
+}
+
+const Island = ({
+  position,
+  scale,
+  rotation,
+  isRotating,
+  setIsRotating,
+}: IslandProps) => {
+  const { gl, viewport } = useThree();
   const { nodes, materials } = useGLTF("3d/island.glb") as GLTFResult;
   const islandRef = useRef();
+  const lastX = useRef(0);
+  const rotationSpeed = useRef(0);
+  const dampingFactor = 0.95;
+
+  const handlePointerDown = (e: any) => {
+    e.stopPropagation();
+    e.preventReload();
+    setIsRotating(true);
+  };
+
+  const handlePointerUp = (e: any) => {
+    e.stopPropagation();
+    e.preventReload();
+    setIsRotating(false);
+  };
+
+  const handlePointerMove = (e: any) => {
+    e.stopPropagation();
+    e.preventReload();
+  };
+
   return (
-    // @ts-ignore
-    <a.group ref={islandRef} {...props}>
+    <a.group
+      // @ts-ignore
+      ref={islandRef}
+      position={position}
+      scale={scale}
+      rotation={rotation}
+    >
       <mesh
         castShadow
         receiveShadow
