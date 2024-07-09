@@ -6,7 +6,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     <main className="relative">
       <Navbar />
       <div className="flex">
-        <section className="flex min-h-screen flex-1 flex-col w-full">
+        <section className="flex min-h-screen flex-1 flex-col w-full bg-slate-300/20">
           {children}
         </section>
       </div>
