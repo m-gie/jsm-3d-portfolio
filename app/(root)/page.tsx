@@ -16,6 +16,7 @@ export default function Home() {
   const [isRotating, setIsRotating] = useState(false);
   const [planeScale, setPlaneScale] = useState<Vector3>();
   const [planePosition, setPlanePosition] = useState<Vector3>();
+  const [currentStage, setCurrentStage] = useState(0);
 
   useEffect(() => {
     const adjustIslandForScreenSize = () => {
@@ -75,10 +76,11 @@ export default function Home() {
             rotation={islandRotation as Euler}
             isRotating={isRotating}
             setIsRotating={setIsRotating}
+            setCurrentStage={setCurrentStage}
           />
           <Plane
-            planeScale={planeScale}
-            planePosition={planePosition}
+            planeScale={planeScale as Vector3}
+            planePosition={planePosition as Vector3}
             isRotating={isRotating}
             rotation={[0, 20, 0]}
           />
