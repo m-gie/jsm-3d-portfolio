@@ -1,14 +1,14 @@
 "use client";
 import Image from "next/image";
-import Navbar from "@/components/Navbar";
 import { Canvas, Euler, Vector3 } from "@react-three/fiber";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState, useRef } from "react";
 import Island from "@/models/Island";
 import Sky from "@/models/Sky";
 import Loader from "@/components/Loader";
 import Bird from "@/models/Bird";
 import Plane from "@/models/Plane";
 import HomeInfo from "@/components/HomeInfo";
+// import sakura from "/sakura.mp3"
 
 export default function Home() {
   const [islandScale, setIslandScale] = useState<Vector3>();
@@ -49,6 +49,20 @@ export default function Home() {
     adjustPlaneForScreenSize();
   }, []);
 
+  const audioRef = useRef<HTMLAudioElement>(new Audio("/sakura.mp3"));
+  audioRef.current.volume = 0.3;
+  audioRef.current.loop = true;
+
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+
+  useEffect(() => {
+    if (isPlayingAudio) {
+      audioRef.current.play();
+    } else {
+      audioRef.current.pause();
+    }
+  }, [isPlayingAudio]);
+
   return (
     <section className=" min-h-screen w-full relative">
       <div className="absolute top-28 left-0 right-0 z-10 flex items-center justify-center">
@@ -87,6 +101,16 @@ export default function Home() {
           />
         </Suspense>
       </Canvas>
+      <div className="absolute bottom-2 left-2">
+        <Image
+          src={isPlayingAudio ? "/icons/soundon.png" : "/icons/soundoff.png"}
+          alt="sound"
+          width={48}
+          height={48}
+          className="cursor-pointer object-contain"
+          onClick={() => setIsPlayingAudio(!isPlayingAudio)}
+        />
+      </div>
     </section>
   );
 }
