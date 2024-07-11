@@ -49,17 +49,22 @@ export default function Home() {
     adjustPlaneForScreenSize();
   }, []);
 
-  const audioRef = useRef<HTMLAudioElement>(new Audio("/sakura.mp3"));
-  audioRef.current.volume = 0.3;
-  audioRef.current.loop = true;
+  const audioRef = useRef<HTMLAudioElement | undefined>(
+    typeof Audio !== "undefined" ? new Audio("/sakura.mp3") : undefined
+  );
+
+  useEffect(() => {
+    audioRef.current!.volume = 0.3;
+    audioRef.current!.loop = true;
+  }, [audioRef]);
 
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
 
   useEffect(() => {
     if (isPlayingAudio) {
-      audioRef.current.play();
+      audioRef.current?.play();
     } else {
-      audioRef.current.pause();
+      audioRef.current?.pause();
     }
   }, [isPlayingAudio]);
 
