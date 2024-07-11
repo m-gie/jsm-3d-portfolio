@@ -119,7 +119,7 @@ const Island = ({
         case normalizedRotation >= 0.85 && normalizedRotation <= 1.3:
           setCurrentStage(3);
           break;
-        case normalizedRotation >= 2.4 && normalizedRotation <= 2.6:
+        case normalizedRotation >= 2.2 && normalizedRotation <= 2.5:
           setCurrentStage(2);
           break;
         case normalizedRotation >= 4.25 && normalizedRotation <= 4.75:

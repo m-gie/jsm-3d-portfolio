@@ -8,6 +8,7 @@ import Sky from "@/models/Sky";
 import Loader from "@/components/Loader";
 import Bird from "@/models/Bird";
 import Plane from "@/models/Plane";
+import HomeInfo from "@/components/HomeInfo";
 
 export default function Home() {
   const [islandScale, setIslandScale] = useState<Vector3>();
@@ -50,9 +51,9 @@ export default function Home() {
 
   return (
     <section className=" min-h-screen w-full relative">
-      {/* <div className="absolute top-28 left-0 right-0 z-10 flex items-center justify-center">
-        POPUP
-      </div> */}
+      <div className="absolute top-28 left-0 right-0 z-10 flex items-center justify-center">
+        {currentStage !== 0 && <HomeInfo currentStage={currentStage} />}
+      </div>
       <Canvas
         className={`w-full h-screen bg-transparent ${
           isRotating ? "cursor-grabbing" : "cursor-grab"
