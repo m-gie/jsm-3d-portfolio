@@ -69,7 +69,7 @@ export default function Home() {
             intensity={1}
           />
           <Bird />
-          <Sky />
+          <Sky isRotating={isRotating} />
           <Island
             position={islandPosition as Vector3}
             scale={islandScale as Vector3}
