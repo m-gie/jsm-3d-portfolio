@@ -8,7 +8,7 @@ interface SkyProps {
 
 const Sky = ({ isRotating }: SkyProps) => {
   const sky = useGLTF("3d/sky.glb");
-  const skyRef = useRef();
+  const skyRef = useRef<any>();
 
   useFrame((_, delta) => {
     if (isRotating) {
