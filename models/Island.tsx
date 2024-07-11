@@ -98,6 +98,36 @@ const Island = ({
     }
   };
 
+  // Touch events for mobile devices
+  const handleTouchStart = (e: any) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setIsRotating(true);
+
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    lastX.current = clientX;
+  };
+
+  const handleTouchEnd = (e: any) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setIsRotating(false);
+  };
+
+  const handleTouchMove = (e: any) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    if (isRotating) {
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const delta = (clientX - lastX.current) / viewport.width;
+
+      islandRef.current!.rotation.y += delta * 0.01 * Math.PI;
+      lastX.current = clientX;
+      rotationSpeed.current = delta * 0.01 * Math.PI;
+    }
+  };
+
   useFrame(() => {
     if (!isRotating) {
       rotationSpeed.current *= dampingFactor;
@@ -138,12 +168,18 @@ const Island = ({
     canvas.addEventListener("pointermove", handlePointerMove);
     document.addEventListener("keydown", handleKeyDown);
     document.addEventListener("keyup", handleKeyUp);
+    canvas.addEventListener("touchstart", handleTouchStart);
+    canvas.addEventListener("touchend", handleTouchEnd);
+    canvas.addEventListener("touchmove", handleTouchMove);
     return () => {
       canvas.removeEventListener("pointerdown", handlePointerDown);
       canvas.removeEventListener("pointerup", handlePointerUp);
       canvas.removeEventListener("pointermove", handlePointerMove);
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("keyup", handleKeyUp);
+      canvas.removeEventListener("touchstart", handleTouchStart);
+      canvas.removeEventListener("touchend", handleTouchEnd);
+      canvas.removeEventListener("touchmove", handleTouchMove);
     };
   }, [
     gl,
@@ -152,6 +188,9 @@ const Island = ({
     handlePointerMove,
     handleKeyDown,
     handleKeyUp,
+    handleTouchStart,
+    handleTouchEnd,
+    handleTouchMove,
   ]);
 
   return (
